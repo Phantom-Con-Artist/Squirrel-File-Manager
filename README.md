@@ -22,11 +22,16 @@ Search, tag and sort files across every drive without moving a single one.
 
 - [The problem](#the-problem)
 - [What makes Squirrel different](#what-makes-squirrel-different)
+- [How it works](#how-it-works)
 - [Features](#features)
 - [Screenshots](#screenshots)
 - [Search examples](#search-examples)
 - [Performance](#performance)
 - [Safety](#safety)
+- [Privacy](#privacy)
+- [FAQ](#faq)
+- [Roadmap](#roadmap)
+- [Built with](#built-with)
 - [Status and availability](#status-and-availability)
 - [License](#license)
 
@@ -42,6 +47,14 @@ Files end up everywhere: Downloads, project folders, old drives, three copies of
 | **Safe** | Nothing on disk changes unless you ask. Creating a file never overwrites, and deleting always goes to the system Trash. |
 | **Fast** | Over a million files searched in about 10 ms on a laptop, as you type. |
 | **Whole computer** | Maps your system drive, home folder and external drives together, not one folder at a time. |
+
+## How it works
+
+1. **Map.** Choose your drives and folders. Squirrel walks them once, read-only, and records a small pointer for each file: its path, name, size, type and date.
+2. **Find.** Every search runs against those pointers in memory, so results appear as you type. Squirrel reads a file's contents only when you preview it, search inside it or check it for duplicates.
+3. **Organize.** Tags, collections, versions and duplicates are stored as extra information on the pointers. Your files are never moved or renamed to organize them.
+
+Squirrel suits anyone whose files are spread across many folders and drives: developers with dozens of projects, designers and photographers with large libraries, and people who keep everything in Downloads.
 
 ## Features
 
@@ -98,6 +111,38 @@ Method, raw numbers and known slow cases are in [docs/evidence.md](docs/evidence
 Squirrel reads your drives. It writes only to its own data folder, unless you explicitly create a file or move one to the Trash, and asks you to confirm first.
 
 This is checked by automated tests, including one that maps a deliberately hostile folder and verifies that every byte, timestamp and permission is unchanged afterwards. Details in [docs/safety.md](docs/safety.md).
+
+## Privacy
+
+Squirrel works fully offline. It has no account, no cloud service, no analytics and no crash reporting, and it makes no network connections. The index stays on your computer in Squirrel's own data folder, and deleting that folder removes everything Squirrel knows.
+
+## FAQ
+
+**Does Squirrel replace my file manager?**
+It can sit beside it. Squirrel is for finding and organizing across your whole computer. Any file opens in its usual app, or in your system file manager with one click.
+
+**What happens to my tags if I move a file outside Squirrel?**
+Tags are tied to the file's path, so after a rescan the file appears at its new path without its tags. Squirrel never needs you to move files to organize them, and tags are never lost to a crash or an unplugged drive.
+
+**Do changes on disk show up instantly?**
+Not yet. New, moved or deleted files appear after a rescan (`Ctrl R`). Live updates are on the roadmap.
+
+**How much space does the index use?**
+About 800 MB on disk per million files, and about 200 MB of memory for the search index. See [docs/evidence.md](docs/evidence.md).
+
+## Roadmap
+
+- Live updates when files change on disk
+- Verified builds for macOS and Windows
+- A smaller index on disk
+- First public release
+
+## Built with
+
+- [Flutter](https://flutter.dev) for the interface
+- [Rust](https://www.rust-lang.org) for the engine
+- [LMDB](https://www.symas.com/lmdb) through [heed](https://github.com/meilisearch/heed) for the index on disk
+- [nucleo](https://github.com/helix-editor/nucleo) for fuzzy matching
 
 ## Status and availability
 
